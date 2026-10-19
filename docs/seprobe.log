@@ -1,0 +1,46 @@
+
+==== SeProbe: S3908 via QUP1 SE4 (polled GENI I2C, addr 0x4b) ====
+log file: \seprobe.log
+
+[0] vcc rail: vreg_l4b_1p8 on via RPMh (the PMIC does not allow direct writes)
+  CmdDb ldob4 -> status=0x0 addr=0x40800
+  L4B before: enabled=0 ready=0
+  CreateHandle(drv 2) -> 0x0
+  IssueCommandSet -> 0x0 req=1 result=0
+  L4B after:  enabled=1 ready=1
+
+[1] touch power: VDD high, reset low->high
+  INT after 40 ms: 0 (0 = controller has a message)
+
+[2] enable wrapper-1 / SE4 clocks (votes)
+  vote reg 40000200 -> 443c0200
+  core    halt=00004000 on
+  core_2x halt=00004000 on
+  m_ahb   halt=00000000 on
+  s_ahb   halt=80000002 off but hw-gated (wakes on access, same as Linux)
+  s4 clk  halt=00004000 on
+
+[3] pin mux gpio44/45 -> qup1_se4 (function 1), pull-up, 2 mA
+  gpio44 sda cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+  gpio45 scl cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+
+[4] engine state
+  QUPV3_HW_VER=30090000 (3.9)  FW_REVISION=00000303  IF_DISABLE=00000000  HW_PARAM_0=20102864
+  GENI_STATUS=00000000 CLK_CTRL_RO=00000001 M_CLK_CFG=00000011 CLK_SEL=00000000
+  protocol=3 (3=I2C) fifo_if_disabled=0 tx_fifo_depth=16
+
+[5] configure engine and read 8 bytes from 0x4b
+
+  attempt A: after reset low->high (done in [1])
+  gpio10 vdd  cfg=00000201 io=00000003 func=0 pull=1 drv=0 oe=1 in=1 out=1
+  gpio24 rst  cfg=00000201 io=00000003 func=0 pull=1 drv=0 oe=1 in=1 out=1
+  gpio25 int  cfg=00000003 io=00000000 func=0 pull=3 drv=0 oe=0 in=0 out=0
+  m_irq_status seen=08000081 bytes=8 geni_status=00000000 ios=00000007
+  result=0 data: a5 10 18 00 01 01 73 33 
+
+RESULT: TCM controller answered, message marker 0xA5, code 0x10
+
+[6] restoring clocks and pins
+  vote reg now 40000200
+
+Done. Press any key (Vol/Power) to exit.

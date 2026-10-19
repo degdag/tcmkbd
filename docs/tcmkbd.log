@@ -1,0 +1,143 @@
+
+==== TcmKbd: S3908 touch + on-screen keyboard (resident driver) ====
+log file: \tcmkbd.log
+
+[0] vcc rail: vreg_l4b_1p8 on via RPMh
+  CmdDb ldob4 -> status=0x0 addr=0x40800
+  L4B before: enabled=0 ready=0
+  CreateHandle(drv 2) -> 0x0
+  IssueCommandSet -> 0x0 req=1 result=0
+  L4B after:  enabled=1 ready=1
+
+[1] touch power: VDD high, reset low->high
+  INT after 40 ms: 0 (0 = controller has a message)
+
+[2] enable wrapper-1 / SE4 clocks (votes)
+  vote reg 40000200 -> 443c0200
+  core    halt=00004000 on
+  core_2x halt=00004000 on
+  m_ahb   halt=00000000 on
+  s_ahb   halt=80000002 off but hw-gated (wakes on access, same as Linux)
+  s4 clk  halt=00004000 on
+
+[3] pin mux gpio44/45 -> qup1_se4 (function 1), pull-up, 2 mA
+  gpio44 sda cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+  gpio45 scl cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+
+[4] engine state
+  QUPV3_HW_VER=30090000 (3.9)  FW_REVISION=00000303  IF_DISABLE=00000000  HW_PARAM_0=20102864
+  protocol=3 (3=I2C) fifo_if_disabled=0 tx_fifo_depth=16
+
+[5] configure engine, read the pending IDENTIFY message
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0: marker=a5 code=10 len=24 mode=1 part=s3908
+
+[6] GET_APPLICATION_INFO (0x20)
+  send rc=0, INT low: 1
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0 code=1d len=20
+
+[7] ENABLE_REPORT (0x05)
+  send rc=0
+
+[8] keyboard + console hooks
+  GOP 1080x2412, keyboard 1080x648 at y=1764, key 108x108
+  hooks installed: ConIn, ConInEx=yes, ConOut
+
+Resident. Keyboard is visible.
+
+==== TcmKbd: S3908 touch + on-screen keyboard (resident driver) ====
+log file: \tcmkbd.log
+
+[0] vcc rail: vreg_l4b_1p8 on via RPMh
+  CmdDb ldob4 -> status=0x0 addr=0x40800
+  L4B before: enabled=0 ready=0
+  CreateHandle(drv 2) -> 0x0
+  IssueCommandSet -> 0x0 req=1 result=0
+  L4B after:  enabled=1 ready=1
+
+[1] touch power: VDD high, reset low->high
+  INT after 40 ms: 0 (0 = controller has a message)
+
+[2] enable wrapper-1 / SE4 clocks (votes)
+  vote reg 40000200 -> 443c0200
+  core    halt=00004000 on
+  core_2x halt=00004000 on
+  m_ahb   halt=00000000 on
+  s_ahb   halt=80000002 off but hw-gated (wakes on access, same as Linux)
+  s4 clk  halt=00004000 on
+
+[3] pin mux gpio44/45 -> qup1_se4 (function 1), pull-up, 2 mA
+  gpio44 sda cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+  gpio45 scl cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+
+[4] engine state
+  QUPV3_HW_VER=30090000 (3.9)  FW_REVISION=00000303  IF_DISABLE=00000000  HW_PARAM_0=20102864
+  protocol=3 (3=I2C) fifo_if_disabled=0 tx_fifo_depth=16
+
+[5] configure engine, read the pending IDENTIFY message
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0: marker=a5 code=10 len=24 mode=1 part=s3908
+
+[6] GET_APPLICATION_INFO (0x20)
+  send rc=0, INT low: 1
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0 code=1d len=20
+
+[7] ENABLE_REPORT (0x05)
+  send rc=0
+
+[8] keyboard + console hooks
+  GOP 1080x2412, keyboard 1080x648 at y=1764, key 108x108
+  hooks installed: ConIn, ConInEx=yes, ConOut
+
+Resident. Keyboard is visible.
+
+==== TcmKbd: S3908 touch + on-screen keyboard (resident driver) ====
+log file: \tcmkbd.log
+
+[0] vcc rail: vreg_l4b_1p8 on via RPMh
+  CmdDb ldob4 -> status=0x0 addr=0x40800
+  L4B before: enabled=0 ready=0
+  CreateHandle(drv 2) -> 0x0
+  IssueCommandSet -> 0x0 req=1 result=0
+  L4B after:  enabled=1 ready=1
+
+[1] touch power: VDD high, reset low->high
+  INT after 40 ms: 0 (0 = controller has a message)
+
+[2] enable wrapper-1 / SE4 clocks (votes)
+  vote reg 40000200 -> 443c0200
+  core    halt=00004000 on
+  core_2x halt=00004000 on
+  m_ahb   halt=00000000 on
+  s_ahb   halt=80000002 off but hw-gated (wakes on access, same as Linux)
+  s4 clk  halt=00004000 on
+
+[3] pin mux gpio44/45 -> qup1_se4 (function 1), pull-up, 2 mA
+  gpio44 sda cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+  gpio45 scl cfg=00000007 io=00000001 func=1 pull=3 drv=0 oe=0 in=1 out=0
+
+[4] engine state
+  QUPV3_HW_VER=30090000 (3.9)  FW_REVISION=00000303  IF_DISABLE=00000000  HW_PARAM_0=20102864
+  protocol=3 (3=I2C) fifo_if_disabled=0 tx_fifo_depth=16
+
+[5] configure engine, read the pending IDENTIFY message
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0: marker=a5 code=10 len=24 mode=1 part=s3908
+
+[6] GET_APPLICATION_INFO (0x20)
+  send rc=0, INT low: 1
+  m_irq_status seen=0c000081 bytes=256 geni_status=00000000 ios=00000007
+  read rc=0 code=1d len=20
+
+[7] ENABLE_REPORT (0x05)
+  send rc=0
+
+[8] keyboard + console hooks
+  GOP 1080x2412, keyboard 1080x648 at y=1764, key 108x108
+  console: glyph height 19 px, current mode 4 (126 rows), keyboard starts at y=1764
+  current text mode overlaps the keyboard; switching to mode 3
+  hooks installed: ConIn, ConInEx=yes, ConOut
+
+Resident. Keyboard is visible.
